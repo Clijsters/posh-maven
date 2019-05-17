@@ -2,19 +2,25 @@ function Get-MavenProject {
     [CmdletBinding()]
     param(
         # Parameter help description
-        [Parameter(Mandatory = $false)]
+        [Parameter( Mandatory = $false, Position = 0, ValueFromPipeline = $true )]
         [System.IO.DirectoryInfo[]]
         $InputObject = [System.IO.DirectoryInfo]::new($pwd)
     )
 
-    process {
-        foreach ($path in $InputObject) {
-            $pom = Get-ChildItem $path -Filter "pom.xml"
-            if (-not $pom) {
-                throw "No pom.xml in $InputObject"
-            }
 
-            [xml](Get-Content $pom.FullName) | ConvertTo-MavenProject
+    process {
+        if (-not (Test-Path $InputObject)) {
+            $path = (Get-Item $InputObject.FullName).FullName
         }
+        else {
+            $path = (Get-Item $InputObject).FullName
+        }
+        $pom = Get-ChildItem $path -Filter "pom.xml"
+        if (-not $pom) {
+            Write-Warning "No pom.xml in $path"
+            return
+        }
+        [xml](Get-Content $pom.FullName) | ConvertTo-MavenProject
     }
 }
+
