@@ -7,7 +7,6 @@ function Get-MavenProject {
         $InputObject = [System.IO.DirectoryInfo]::new($pwd)
     )
 
-
     process {
         if (-not (Test-Path $InputObject)) {
             $path = (Get-Item $InputObject.FullName).FullName
@@ -20,7 +19,10 @@ function Get-MavenProject {
             Write-Warning "No pom.xml in $path"
             return
         }
-        [xml](Get-Content $pom.FullName) | ConvertTo-MavenProject
+        $result = [xml](Get-Content $pom.FullName) | ConvertTo-MavenProject
+        $result.Path = $path
+
+        Write-Output $result
     }
 }
 

@@ -36,7 +36,8 @@ function ConvertTo-MavenProject {
             Dependencies         = $pom.dependencies.dependency;
             Build                = @{
                 plugins = $pom.plugins.plugin;
-            };
+			};
+			Path = "";
             originalObject       = $InputObject
         }
 
