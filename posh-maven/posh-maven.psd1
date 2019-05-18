@@ -70,6 +70,7 @@
 
     # Aus diesem Modul zu exportierende Funktionen. Um optimale Leistung zu erzielen, verwenden Sie keine Platzhalter und löschen den Eintrag nicht. Verwenden Sie ein leeres Array, wenn keine zu exportierenden Funktionen vorhanden sind.
     FunctionsToExport = @(
+        'Get-MavenProject',
         'Get-MavenProjectVersion',
         'Get-MavenProjectName',
         'Get-MavenParentPom',
@@ -100,7 +101,7 @@
         PSData = @{
 
             # 'Tags' wurde auf das Modul angewendet und unterstützt die Modulermittlung in Onlinekatalogen.
-            Tags       = @('mvn', 'maven', 'java', 'build')
+            Tags       = @('mvn', 'maven', 'java', 'build', 'prompt')
 
             # Eine URL zur Lizenz für dieses Modul.
             LicenseUri = 'https://github.com/Clijsters/posh-maven/blob/master/LICENSE'

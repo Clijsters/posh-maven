@@ -32,6 +32,13 @@
     "site-deploy"
 ) | Sort-Object
 
+[String[]]$firstLevelProperties = @(
+	"project",
+	"settings",
+	"env",
+	"project"
+) | Sort-Object
+
 if (Test-Path Function:\TabExpansion) {
     Rename-Item Function:\TabExpansion OldTabExpansion
 }
@@ -40,6 +47,14 @@ function TabExpansion($line, $lastWord) {
     $lastBlock = [regex]::Split($line, '[|;]')[-1].TrimStart()
 
     if ($lastBlock -match "^(mvn) (.*)") {
+        if ($lastWord -match "^-D.+") {
+			$currentProperty = $lastWord -split "."
+			$lastLvl =$currentProperty[$currentProperty.length-1]
+
+			if ($lastLvl -eq "") {
+				return
+			}
+        }
         $goals -match "^$($lastWord)"
     }
     else {
