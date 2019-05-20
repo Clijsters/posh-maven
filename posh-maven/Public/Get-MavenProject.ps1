@@ -1,7 +1,7 @@
 function Get-MavenProject {
     [CmdletBinding()]
     param(
-        # Parameter help description
+        # The maven project ro
         [Parameter( Mandatory = $false, Position = 0, ValueFromPipeline = $true )]
         [System.IO.DirectoryInfo[]]
         $InputObject = [System.IO.DirectoryInfo]::new($pwd)
