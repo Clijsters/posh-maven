@@ -25,6 +25,10 @@ function ConvertTo-MavenProject {
     process {
         $pom = $InputObject.project
 
+        if (-not $pom) {
+            Throw "No project node in input xml"
+        }
+
         $result = [PSCustomObject]@{
             Name                 = $pom.groupId + "." + $pom.artifactId;
             GroupId              = $pom.groupId;
@@ -36,20 +40,21 @@ function ConvertTo-MavenProject {
             Dependencies         = $pom.dependencies.dependency;
             Build                = @{
                 plugins = $pom.plugins.plugin;
-			};
-			Path = "";
+            };
+            Path                 = "";
             originalObject       = $InputObject
         }
 
         $properties = @{ }
-
-        foreach ($property in ($pom.properties | Get-member | Where-Object MemberType -eq Property)) {
-            $properties[$property.name] = $pom.properties[$property.name].'#text'
+        if ($pom.properties) {
+            foreach ($property in ($pom.properties | Get-member | Where-Object MemberType -eq Property)) {
+                $properties[$property.name] = $pom.properties[$property.name].'#text'
+            }
         }
-
         $result.properties = New-Object -TypeName psobject -Property $properties
 
         $result.properties.PSObject.TypeNames.Insert(0, "posh-maven.MavenProject.MavenProperties")
+        $result.PSObject.TypeNames.Insert(0, "posh-maven.MavenProject")
 
         $result | Add-Member -MemberType ScriptMethod -Name "ToString" -Force -Value {
             "$($this.Name) $($this.Version)"
