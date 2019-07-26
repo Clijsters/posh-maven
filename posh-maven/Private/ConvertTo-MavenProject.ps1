@@ -28,10 +28,17 @@ function ConvertTo-MavenProject {
         if (-not $pom) {
             Throw "No project node in input xml"
         }
+        if ($pom.groupId) {
+            $groupId = $pom.groupId
+        } elseif ($pom.parent.groupId){
+            $groupId = $pom.parent.groupId
+        } else {
+            $groupId = "UNKNOWN"
+        }
 
         $result = [PSCustomObject]@{
-            Name                 = $pom.groupId + "." + $pom.artifactId;
-            GroupId              = $pom.groupId;
+            Name                 = $groupId + "." + $pom.artifactId;
+            GroupId              = $groupId;
             ArtifactId           = $pom.artifactId;
             Version              = $pom.version;
             Parent               = $pom.parent;
