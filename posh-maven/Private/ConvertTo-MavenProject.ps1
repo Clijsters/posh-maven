@@ -49,6 +49,7 @@ function ConvertTo-MavenProject {
                 plugins = $pom.plugins.plugin;
             };
             Path                 = "";
+            Modules              = $pom.modules.module;
             originalObject       = $InputObject
         }
 

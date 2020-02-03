@@ -29,7 +29,8 @@
     "pre-site",
     "site",
     "post-site",
-    "site-deploy"
+    "site-deploy",
+    "release"
 ) | Sort-Object
 
 [String[]]$firstLevelProperties = @(
