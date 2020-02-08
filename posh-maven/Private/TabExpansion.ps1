@@ -34,10 +34,10 @@
 ) | Sort-Object
 
 [String[]]$firstLevelProperties = @(
-	"project",
-	"settings",
-	"env",
-	"project"
+    "project",
+    "settings",
+    "env",
+    "project"
 ) | Sort-Object
 
 if (Test-Path Function:\TabExpansion) {
@@ -49,12 +49,12 @@ function TabExpansion($line, $lastWord) {
 
     if ($lastBlock -match "^(mvn) (.*)") {
         if ($lastWord -match "^-D.+") {
-			$currentProperty = $lastWord -split "."
-			$lastLvl =$currentProperty[$currentProperty.length-1]
+            $currentProperty = $lastWord -split "."
+            $lastLvl = $currentProperty[$currentProperty.length - 1]
 
-			if ($lastLvl -eq "") {
-				return
-			}
+            if ($lastLvl -eq "") {
+                return
+            }
         }
         $goals -match "^$($lastWord)"
     }

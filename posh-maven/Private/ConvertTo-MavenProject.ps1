@@ -30,9 +30,11 @@ function ConvertTo-MavenProject {
         }
         if ($pom.groupId) {
             $groupId = $pom.groupId
-        } elseif ($pom.parent.groupId){
+        }
+        elseif ($pom.parent.groupId) {
             $groupId = $pom.parent.groupId
-        } else {
+        }
+        else {
             $groupId = "UNKNOWN"
         }
 
