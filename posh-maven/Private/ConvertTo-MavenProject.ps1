@@ -37,14 +37,14 @@ function ConvertTo-MavenProject {
         }
 
         $result = [PSCustomObject]@{
-            Name                 = $groupId + "." + $pom.artifactId;
+            Name                 = $groupId + ":" + $pom.artifactId;
             GroupId              = $groupId;
             ArtifactId           = $pom.artifactId;
             Version              = $pom.version;
             Parent               = $pom.parent;
             Properties           = $pom.properties;
             DependencyManagement = $pom.dependencyManagement;
-            Dependencies         = $pom.dependencies.dependency;
+            Dependencies         = [psobject[]]@($pom.dependencies.dependency);
             Build                = @{
                 plugins = $pom.plugins.plugin;
             };

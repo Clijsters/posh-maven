@@ -1,7 +1,7 @@
 function Get-MavenProject {
     [CmdletBinding()]
     param(
-        # The maven project ro
+        # The maven project root
         [Parameter( Mandatory = $false, Position = 0, ValueFromPipeline = $true )]
         [System.IO.DirectoryInfo[]]
         $InputObject = [System.IO.DirectoryInfo]::new($pwd)
@@ -21,6 +21,15 @@ function Get-MavenProject {
         }
         $result = [xml](Get-Content $pom.FullName) | ConvertTo-MavenProject
         $result.Path = $path
+
+        $moduleList = New-Object -TypeName System.Collections.ArrayList
+        foreach ($subModule in $result.modules) {
+            $fp = $path + "\" + $subModule
+            Write-Debug $fp
+            $moduleList.Add((Get-MavenProject $fp)) | Out-Null
+        }
+        #Write-Verbose $moduleList
+        $result.modules = $moduleList
 
         Write-Output $result
     }
