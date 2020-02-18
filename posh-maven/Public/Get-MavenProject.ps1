@@ -16,7 +16,7 @@ function Get-MavenProject {
         }
         $pom = Get-ChildItem $path -Filter "pom.xml"
         if (-not $pom) {
-            Write-Warning "No pom.xml in $path"
+            Write-Warning "No pom.xml in $InputObject"
             return
         }
         $result = [xml](Get-Content $pom.FullName) | ConvertTo-MavenProject
