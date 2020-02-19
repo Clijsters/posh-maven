@@ -111,11 +111,12 @@ function TabExpansion($line, $lastWord) {
                 return
             }
         }
-        $lvl = ($completeMap.keys -match "^$($lastWord)")
+        #Two : in case a user types it afterwards
+        $lvl = ($completeMap.keys -match "^$($lastWord)\:{0,2}")
         if ($lvl.Count -gt 1) {
-            $lvl
+            "$lvl`:"
         }
-        else {
+        elseif ($lvl.Count -eq 1) {
             $completeMap."$lvl" | % { "$lvl`:$_" }
         }
         $goals -match "^$($lastWord)"
