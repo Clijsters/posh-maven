@@ -72,8 +72,8 @@
     FunctionsToExport = @(
         'Get-MavenProject',
         'Get-MavenProjectVersion',
-        'Get-MavenProjectName',
-        'Get-MavenParentPom',
+       #'Get-MavenProjectName',
+       #'Get-MavenParentPom',
         'Write-MavenProject'
     )
 
@@ -110,7 +110,7 @@
             ProjectUri = 'https://github.com/Clijsters/posh-maven'
 
             # Eine URL zu einem Symbol, das das Modul darstellt.
-            #IconUri = 'https://github.com/Clijsters/posh-maven/raw/develop/logo.ico'
+            IconUri = 'https://github.com/Clijsters/posh-maven/raw/develop/logo.png'
 
             # 'ReleaseNotes' des Moduls
             # ReleaseNotes = ''
