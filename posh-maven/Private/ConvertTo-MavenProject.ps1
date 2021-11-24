@@ -25,31 +25,46 @@ function ConvertTo-MavenProject {
     process {
         $pom = $InputObject.project
 
+        if (-not $pom) {
+            Throw "No project node in input xml"
+        }
+        if ($pom.groupId) {
+            $groupId = $pom.groupId
+        }
+        elseif ($pom.parent.groupId) {
+            $groupId = $pom.parent.groupId
+        }
+        else {
+            $groupId = "UNKNOWN"
+        }
+
         $result = [PSCustomObject]@{
-            Name                 = $pom.groupId + "." + $pom.artifactId;
-            GroupId              = $pom.groupId;
+            Name                 = $groupId + ":" + $pom.artifactId;
+            GroupId              = $groupId;
             ArtifactId           = $pom.artifactId;
             Version              = $pom.version;
             Parent               = $pom.parent;
             Properties           = $pom.properties;
             DependencyManagement = $pom.dependencyManagement;
-            Dependencies         = $pom.dependencies.dependency;
+            Dependencies         = [psobject[]]@($pom.dependencies.dependency);
             Build                = @{
                 plugins = $pom.plugins.plugin;
-			};
-			Path = "";
+            };
+            Path                 = "";
+            Modules              = $pom.modules.module;
             originalObject       = $InputObject
         }
 
         $properties = @{ }
-
-        foreach ($property in ($pom.properties | Get-member | Where-Object MemberType -eq Property)) {
-            $properties[$property.name] = $pom.properties[$property.name].'#text'
+        if ($pom.properties) {
+            foreach ($property in ($pom.properties | Get-member | Where-Object MemberType -eq Property)) {
+                $properties[$property.name] = $pom.properties[$property.name].'#text'
+            }
         }
-
         $result.properties = New-Object -TypeName psobject -Property $properties
 
         $result.properties.PSObject.TypeNames.Insert(0, "posh-maven.MavenProject.MavenProperties")
+        $result.PSObject.TypeNames.Insert(0, "posh-maven.MavenProject")
 
         $result | Add-Member -MemberType ScriptMethod -Name "ToString" -Force -Value {
             "$($this.Name) $($this.Version)"
