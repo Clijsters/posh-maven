@@ -1,4 +1,4 @@
-function Write-CurrentMavenProject {
+function Write-MavenProject {
     [CmdletBinding()]
     param (
         # the maven project root path
