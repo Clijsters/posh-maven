@@ -6,9 +6,6 @@
   configuration: Release
   skip_non_tags: true
   image: WMF 5
-  environment:
-    NuGetApiKey:
-      secure: PEApyZDcz+aPFMACztd9kMC279hQAHvm9GLZq4CaL2+0v9bnd2xIidHmxV86/EmO
   install:
   - ps: . .\AppVeyor\Install.ps1
   build: off
